@@ -10,15 +10,16 @@ import park.core.order.OrderServiceImpl;
 
 public class OrderApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        OrderService orderService = new OrderServiceImpl();
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
+        // MemoryMemberRepository, FixDiscountPolicy 의존 관계가 주입된 orderServiceImpl이 담김
+        OrderService orderService = appConfig.orderService();
 
         long memberId = 1L;
         Member member = new Member(memberId, "memberA", Grade.VIP);
         memberService.join(member);
-
         Order order = orderService.createOrder(memberId, "itemA", 10000);
-        System.out.println("order = " + order); // toString 호출됨
-        System.out.println("order.calculatedPrice = " + order.calculatePrice());
+
+        System.out.println("order = " + order);
     }
 }
