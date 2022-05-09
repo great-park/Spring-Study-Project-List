@@ -1,6 +1,7 @@
 package park.core;
 import park.core.discount.DiscountPolicy;
 import park.core.discount.FixDiscountPolicy;
+import park.core.discount.RateDiscountPolicy;
 import park.core.member.MemberRepository;
 import park.core.member.MemberService;
 import park.core.member.MemberServiceImpl;
@@ -23,6 +24,7 @@ public class AppConfig {
         return new MemoryMemberRepository();
     }
     public DiscountPolicy discountPolicy() {
-        return new FixDiscountPolicy();
+        //return new FixDiscountPolicy();
+        return new RateDiscountPolicy();
     }
 }
