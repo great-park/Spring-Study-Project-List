@@ -11,28 +11,31 @@ import park.core.member.MemoryMemberRepository;
 import park.core.order.OrderService;
 import park.core.order.OrderServiceImpl;
 
-// 설정 정보에 Configuration 어노테이션을 붙인다.
+
 @Configuration
 public class AppConfig {
 
-    // 각 메소드에 Bean을 붙여서 이것들이 스프링 컨테이너에 등록이 된다.
+    //@Bean memberService -> new MemoryMemberRepository()
+    //@Bean orderService -> new MemoryMemberRepository()
+    // 싱글톤 위반?? -> 스프링 컨테이너가 해결해줌
 
-    //key : memberService, value : MemberServiceImpl(memberRepository) 로 스프링 컨테이너에 등록록
-   @Bean
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
+
     @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
+
     @Bean
     public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
+
     @Bean
     public DiscountPolicy discountPolicy() {
-        //return new FixDiscountPolicy();
         return new RateDiscountPolicy();
     }
 }
