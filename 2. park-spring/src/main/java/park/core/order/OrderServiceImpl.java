@@ -1,16 +1,20 @@
 package park.core.order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import park.core.discount.DiscountPolicy;
 import park.core.discount.FixDiscountPolicy;
 import park.core.discount.RateDiscountPolicy;
 import park.core.member.Member;
 import park.core.member.MemberRepository;
 import park.core.member.MemoryMemberRepository;
+
+@Component
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
-    // 여기도 마찬가지로 누가 들어올 지 전혀 모름. 추상화에만 의존중
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;

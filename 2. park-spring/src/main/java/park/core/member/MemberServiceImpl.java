@@ -1,10 +1,15 @@
 package park.core.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class MemberServiceImpl implements MemberService{
 
-    // MemberServiceImpl는 (추상화)MemberRepository도 의존하고, 구현체인 MemmoryMemberRepository도 의존하기 때문에 원칙에  DIP 위배!
     private final MemberRepository memberRepository;
 
+    //기존에는 AppConfig에서 의존관계 주입이 가능했지만, ComponentScan을 사용했기 때문에 Autowired 사용해야됨됨
+   @Autowired //ac.getBean(MemberRepository.class)
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
