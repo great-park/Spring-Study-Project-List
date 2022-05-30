@@ -1,17 +1,19 @@
 package park.core.scope;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import
-        org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
+
 import static org.assertj.core.api.Assertions.*;
 public class SingletonWithPrototypeTest1 {
     @Test
     void singletonClientUsePrototype() {
         AnnotationConfigApplicationContext ac =
-                new AnnotationConfigApplicationContext(ClientBean.class, PrototypeBean.class);
+                new AnnotationConfigApplicationContext(ClientBean.class, ClientBean.class);
 
         ClientBean clientBean1 = ac.getBean(ClientBean.class);
         int count1 = clientBean1.logic();
@@ -25,17 +27,17 @@ public class SingletonWithPrototypeTest1 {
     //싱글톤 스코프는 생략해도 됨
     @Scope("singleton")
     static class ClientBean {
-        private final PrototypeBean prototypeBean; // 생성시점에 주입
+
         @Autowired
-        public ClientBean(PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
-        }
+        private Provider<PrototypeBean> provider;
         public int logic() {
+            PrototypeBean prototypeBean = provider.get();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
         }
     }
+
     @Scope("prototype")
     static class PrototypeBean {
         private int count = 0;
